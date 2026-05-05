@@ -1,6 +1,6 @@
 const requestEmitter = require('../utils/eventEmitter');
 
-// Маскування конфіденційних даних
+
 const maskSensitiveData = (data) => {
   const sensitiveFields = ['password', 'token', 'email'];
   const maskedData = { ...data };
@@ -36,7 +36,7 @@ const loggerMiddleware = (req, res, next) => {
       query: req.query
     };
 
-    // Випромінюємо подію для збереження в JSON
+
     requestEmitter.emit('requestCompleted', requestInfo);
     
     console.log(`${req.method} ${req.originalUrl} ${res.statusCode} - ${durationInMs}ms`);
