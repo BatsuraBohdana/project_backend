@@ -16,7 +16,7 @@ const trackSchema = new mongoose.Schema({
     trim: true
   },
   duration: {
-    type: Number, // в секундах
+    type: Number, 
     min: 0
   },
   tags: {

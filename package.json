@@ -2,10 +2,11 @@
   "name": "music-api",
   "version": "1.0.0",
   "description": "Music Playlist API",
-  "main": "src/app.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest --runInBand"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -17,6 +18,9 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "jest": "^30.3.0",
+    "mongodb-memory-server": "^11.1.0",
+    "nodemon": "^2.0.22",
+    "supertest": "^7.2.2"
   }
 }
