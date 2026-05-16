@@ -1,0 +1,29 @@
+<div style="max-width: 450px; margin: 6rem auto; background: var(--bg-card); padding: 4rem; border-radius: 32px; border: 1px solid var(--border-color); box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);">
+    <div style="text-align: center; margin-bottom: 3rem;">
+        <h2 style="font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Create Account</h2>
+        <p style="color: var(--text-muted); font-size: 1.1rem;">Join our musical community</p>
+    </div>
+    
+    <form onsubmit="handleAuth(event, 'signup')">
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; color: var(--text-muted); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">Username</label>
+            <input type="text" id="signup-user" class="form-control" placeholder="username" required style="height: 56px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); color: #fff; border-radius: 16px; padding: 0 1.5rem; font-size: 1rem; width: 100%;">
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; color: var(--text-muted); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">Email Address</label>
+            <input type="email" id="signup-email" class="form-control" placeholder="name@example.com" required style="height: 56px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); color: #fff; border-radius: 16px; padding: 0 1.5rem; font-size: 1rem; width: 100%;">
+        </div>
+        
+        <div style="margin-bottom: 2.5rem;">
+            <label style="display: block; color: var(--text-muted); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">Password</label>
+            <input type="password" id="signup-pass" class="form-control" placeholder="••••••••" required style="height: 56px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); color: #fff; border-radius: 16px; padding: 0 1.5rem; font-size: 1rem; width: 100%;">
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%; height: 56px; justify-content: center; font-size: 1.1rem; font-weight: 700; border-radius: 16px; background: #fff; color: #000; transition: all 0.3s ease;">Create Account</button>
+    </form>
+    
+    <div style="text-align: center; margin-top: 2.5rem; color: var(--text-muted);">
+        Already have an account? <a href="/login" style="color: var(--accent-blue); text-decoration: none; font-weight: 600;">Sign In</a>
+    </div>
+</div>

@@ -3,3 +3,4 @@ node_modules/
 logs/*.json
 exports/*.json
 .DS_Store
+coverage/

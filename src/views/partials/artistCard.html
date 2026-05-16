@@ -1,0 +1,12 @@
+<div class="card" data-id="{{id}}" data-type="artist">
+    <div class="card-img">
+        <img src="https://i.pravatar.cc/400?u={{id}}" alt="{{name}}">
+        <div class="play-btn" onclick="playItem('{{name}}')"><i class="fas fa-play"></i></div>
+    </div>
+    <div class="card-title">{{name}}</div>
+    <div class="card-author">{{genre}}</div>
+    <div class="card-footer">
+        <button class="action-btn" onclick="editItem('{{id}}')" title="Редагувати"><i class="fas fa-pen-nib"></i></button>
+        <button class="action-btn delete" onclick="deleteItem('{{id}}')" title="Видалити"><i class="fas fa-trash-alt"></i></button>
+    </div>
+</div>

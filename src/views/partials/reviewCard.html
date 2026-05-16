@@ -1,0 +1,12 @@
+<div class="card" data-id="{{id}}" data-type="review">
+    <div class="card-img" style="aspect-ratio: auto; height: 80px; font-size: 1.5rem; color: #fff;">
+        {{rating}} / 5
+        <div class="play-btn" onclick="playItem('Review by {{userName}}')"><i class="fas fa-play"></i></div>
+    </div>
+    <div class="card-title" style="white-space: normal; font-weight: 400; font-style: italic;">"{{review}}"</div>
+    <div class="card-author">Від: {{userName}}</div>
+    <div class="card-footer">
+        <button class="action-btn" onclick="editItem('{{id}}')" title="Редагувати"><i class="fas fa-pen-nib"></i></button>
+        <button class="action-btn delete" onclick="deleteItem('{{id}}')" title="Видалити"><i class="fas fa-trash-alt"></i></button>
+    </div>
+</div>

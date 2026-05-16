@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 const trackSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: [true, 'Назва треку є обов’язковою'],
+    required: [true, 'Track title is required'],
     trim: true
   },
   artist: {
     type: String,
-    required: [true, 'Автор є обов’язковим'],
+    required: [true, 'Artist is required'],
     trim: true
   },
   album: {
@@ -16,7 +16,7 @@ const trackSchema = new mongoose.Schema({
     trim: true
   },
   duration: {
-    type: Number, 
+    type: Number,
     min: 0
   },
   tags: {
@@ -27,12 +27,15 @@ const trackSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  fileUrl: {
+    type: String,
+    trim: true
+  },
   createdAt: {
     type: Date,
     default: Date.now
   }
 });
-
 
 trackSchema.index({ tags: 1 });
 trackSchema.index({ createdAt: 1 });

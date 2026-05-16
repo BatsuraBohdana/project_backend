@@ -1,14 +1,40 @@
 const express = require('express');
 const trackController = require('../controllers/trackController');
-
+const { validateTrack } = require('../validations/trackValidation');
 const router = express.Router();
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Track:
+ *       type: object
+ *       required:
+ *         - title
+ *         - artist
+ *       properties:
+ *         title:
+ *           type: string
+ *         artist:
+ *           type: string
+ *         album:
+ *           type: string
+ *         duration:
+ *           type: number
+ *         url:
+ *           type: string
+ *         tags:
+ *           type: array
+ *           items:
+ *             type: string
+ */
 
 /**
  * @swagger
  * /api/v1/tracks:
  *   get:
  *     summary: Отримати всі треки
- *     tags: [Tracks]
+ *     tags: [Треки]
  *     parameters:
  *       - in: query
  *         name: tags
@@ -20,7 +46,7 @@ const router = express.Router();
  *         description: Список треків
  *   post:
  *     summary: Додати новий трек
- *     tags: [Tracks]
+ *     tags: [Треки]
  *     requestBody:
  *       required: true
  *       content:
@@ -29,49 +55,39 @@ const router = express.Router();
  *             $ref: '#/components/schemas/Track'
  *     responses:
  *       201:
- *         description: Трек створено
+ *         description: Трек додано
  */
 router
   .route('/')
   .get(trackController.getAllTracks)
-  .post(trackController.createTrack);
-
-/**
- * @swagger
- * /api/v1/tracks/export:
- *   get:
- *     summary: Експортувати всі треки у файл JSON
- *     tags: [Tracks]
- *     responses:
- *       200:
- *         description: Файл завантажено
- */
-router.get('/export', trackController.exportTracks);
+  .post(validateTrack, trackController.createTrack);
 
 /**
  * @swagger
  * /api/v1/tracks/{id}:
  *   get:
  *     summary: Отримати трек за ID
- *     tags: [Tracks]
+ *     tags: [Треки]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
+ *         description: ID треку
  *     responses:
  *       200:
  *         description: Дані треку
  *   patch:
  *     summary: Оновити дані треку
- *     tags: [Tracks]
+ *     tags: [Треки]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
+ *         description: ID треку
  *     requestBody:
  *       content:
  *         application/json:
@@ -82,13 +98,14 @@ router.get('/export', trackController.exportTracks);
  *         description: Трек оновлено
  *   delete:
  *     summary: Видалити трек
- *     tags: [Tracks]
+ *     tags: [Треки]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
+ *         description: ID треку
  *     responses:
  *       204:
  *         description: Трек видалено

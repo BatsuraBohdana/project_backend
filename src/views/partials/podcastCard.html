@@ -1,0 +1,12 @@
+<div class="card" data-id="{{id}}" data-type="podcast">
+    <div class="card-img">
+        <img src="https://picsum.photos/seed/pod{{id}}/400/250" alt="{{title}}">
+        <div class="play-btn" onclick="playItem('{{title}}')"><i class="fas fa-play"></i></div>
+    </div>
+    <div class="card-title">{{title}}</div>
+    <div class="card-author">Ведучий: {{host}}</div>
+    <div class="card-footer">
+        <button class="action-btn" onclick="editItem('{{id}}')" title="Редагувати"><i class="fas fa-pen-nib"></i></button>
+        <button class="action-btn delete" onclick="deleteItem('{{id}}')" title="Видалити"><i class="fas fa-trash-alt"></i></button>
+    </div>
+</div>

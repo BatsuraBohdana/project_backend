@@ -8,12 +8,15 @@ const requestEmitter = new RequestEventEmitter();
 
 const LOG_FILE = path.join(__dirname, '../../logs/requests.json');
 
-
 const logsDir = path.join(__dirname, '../../logs');
-if (!fs.existsSync(logsDir)) {
-  fs.mkdirSync(logsDir);
-}
 
+requestEmitter.initLogs = () => {
+  if (!fs.existsSync(logsDir)) {
+    fs.mkdirSync(logsDir);
+  }
+};
+
+requestEmitter.initLogs();
 
 requestEmitter.on('requestCompleted', (data) => {
   let logs = [];
@@ -26,7 +29,6 @@ requestEmitter.on('requestCompleted', (data) => {
       logs = [];
     }
   }
-  
 
   const localTimestamp = new Date().toLocaleString('uk-UA', {
     timeZone: 'Europe/Kyiv',

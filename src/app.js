@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
@@ -7,49 +6,83 @@ const loggerMiddleware = require('./middleware/logger');
 const responseTimeMiddleware = require('./middleware/responseTime');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocs = require('./utils/swagger');
+
+// --- ІМПОРТ УСІХ РОУТІВ ---
+const albumRoutes = require('./routes/albumRoutes');
 const trackRoutes = require('./routes/trackRoutes');
+const userRoutes = require('./routes/userRoutes');
+const playlistRoutes = require('./routes/playlistRoutes');
+const audiobookRoutes = require('./routes/audiobookRoutes');
+const artistRoutes = require('./routes/artistRoutes');
+const podcastRoutes = require('./routes/podcastRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
+
+const globalErrorHandler = require('./middleware/errorHandler');
+
+const TemplateEngine = require('./utils/templateEngine');
 
 dotenv.config();
 
 const app = express();
 
-
 app.use(cors());
 app.use(express.json());
 
-
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
+// Експортуємо обробник для тестів
+app.limiterHandler = (_req, res, _next, options) => {
+  res.status(429).json({
+    status: 'fail',
+    message: options.message
+  });
+};
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, 
-  max: 100, 
+  windowMs: 15 * 60 * 1000,
+  max: 100,
   message: 'Забагато запитів з цього IP, будь ласка, спробуйте пізніше.',
-  handler: (req, res, next, options) => {
-    res.status(429).json({
-      status: 'fail',
-      message: options.message
-    });
-  }
+  handler: app.limiterHandler
 });
+
+// Лімітер завжди підключений у тестах для покриття, але з високим лімітом за замовчуванням
 app.use('/api', limiter);
 
-
 app.use(responseTimeMiddleware);
-
-
 app.use(loggerMiddleware);
 
+// Додаємо редірект з кореня на треки
+app.get('/', (_req, res) => {
+  res.redirect('/api/v1/tracks');
+});
 
+// Рендеринг сторінок входу та реєстрації
+app.get('/login', (_req, res) => {
+  res.send(TemplateEngine.render('login', { TITLE: 'Login' }));
+});
+
+app.get('/signup', (_req, res) => {
+  res.send(TemplateEngine.render('signup', { TITLE: 'Register' }));
+});
+
+// --- ПІДКЛЮЧЕННЯ РОУТІВ ---
+app.use('/api/v1/albums', albumRoutes);
 app.use('/api/v1/tracks', trackRoutes);
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/playlists', playlistRoutes);
+app.use('/api/v1/audiobooks', audiobookRoutes);
+app.use('/api/v1/artists', artistRoutes);
+app.use('/api/v1/podcasts', podcastRoutes);
+app.use('/api/v1/reviews', reviewRoutes);
 
-
-app.all('*', (req, res, next) => {
+// Обробка неіснуючих шляхів
+app.all('*', (req, res, _next) => {
   res.status(404).json({
     status: 'fail',
     message: `Не вдалося знайти ${req.originalUrl} на цьому сервері!`
   });
 });
 
-
+// Глобальний обробник помилок (має бути в самому кінці)
+app.use(globalErrorHandler);
 module.exports = app;

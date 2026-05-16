@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{TITLE}} | VibeStream</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #050505;
+            --bg-card: rgba(20, 20, 20, 0.7);
+            --bg-hover: rgba(40, 40, 40, 0.6);
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.15);
+            --accent: #ff2d55;
+            --accent-gradient: linear-gradient(135deg, #ff2d55, #ff375f);
+            --sidebar-width: 280px;
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --glass: blur(20px) saturate(180%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .floating-blobs {
+            position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+        }
+        .blob {
+            position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.4;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+        .blob-1 { width: 600px; height: 600px; background: #ff2d55; top: -200px; left: -200px; }
+        .blob-2 { width: 500px; height: 500px; background: #5856d6; bottom: -150px; right: -150px; animation-delay: -5s; }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(100px, 50px) scale(1.1); }
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: var(--glass);
+            border-right: 1px solid var(--border-color);
+            height: 100vh;
+            position: fixed;
+            padding: 3rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; gap: 14px;
+            margin-bottom: 3.5rem; color: var(--text-main); text-decoration: none; letter-spacing: -1px;
+            padding-left: 0.5rem;
+        }
+        .logo-icon {
+            width: 40px; height: 40px; background: var(--accent-gradient); color: white;
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; box-shadow: 0 8px 20px rgba(255, 45, 85, 0.3);
+        }
+
+        .nav-label { 
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; 
+            color: var(--text-muted); margin: 2rem 0 1rem 0.5rem; font-weight: 700; opacity: 0.6;
+        }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 14px; padding: 12px 16px;
+            color: var(--text-muted); text-decoration: none; border-radius: var(--radius-sm);
+            font-weight: 600; font-size: 0.95rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            margin-bottom: 6px; cursor: pointer; border: none; background: none; width: 100%;
+            text-align: left;
+        }
+        .nav-item i { font-size: 1.1rem; width: 24px; transition: transform 0.3s ease; }
+        .nav-item:hover { color: var(--text-main); background: var(--bg-hover); }
+        .nav-item:hover i { transform: scale(1.1); }
+        .nav-item.active { 
+            color: var(--text-main); background: rgba(255, 45, 85, 0.1); 
+            box-shadow: inset 0 0 0 1px rgba(255, 45, 85, 0.2);
+        }
+        .nav-item.active i { color: var(--accent); }
+
+        .main { margin-left: var(--sidebar-width); flex: 1; padding: 4rem 5rem; max-width: 1600px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4rem; }
+
+        .search-box { position: relative; width: 400px; }
+        .search-box input {
+            width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color);
+            padding: 14px 16px 14px 48px; border-radius: 16px; color: var(--text-main); 
+            outline: none; transition: all 0.3s ease; font-size: 0.95rem;
+        }
+        .search-box input:focus { border-color: var(--accent); background: rgba(255, 255, 255, 0.08); box-shadow: 0 0 0 4px rgba(255, 45, 85, 0.1); }
+        .search-box i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1rem; }
+
+        .btn { 
+            padding: 12px 24px; border-radius: 16px; font-weight: 700; font-size: 0.9rem;
+            cursor: pointer; border: none; display: flex; align-items: center; gap: 10px; transition: all 0.3s ease;
+        }
+        .btn-primary { background: var(--text-main); color: var(--bg-main); }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 25px rgba(255,255,255,0.15); }
+
+        h2.page-title { font-size: 3rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 2.5rem; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2.5rem; }
+
+        .card {
+            background: var(--bg-card); backdrop-filter: var(--glass);
+            border: 1px solid var(--border-color); border-radius: var(--radius-md);
+            padding: 24px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            display: flex; flex-direction: column; position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: var(--accent-gradient); opacity: 0; transition: opacity 0.3s;
+        }
+        .card:hover { 
+            border-color: var(--border-hover); transform: translateY(-10px);
+            background: var(--bg-hover); box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+        }
+        .card:hover::before { opacity: 1; }
+
+        .card-img {
+            width: 100%; aspect-ratio: 16/10; border-radius: 16px; margin-bottom: 24px;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+            background: #1a1a1a;
+            transition: all 0.5s ease;
+        }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); }
+        .card:hover .card-img img { transform: scale(1.1); }
+        .card-img i { font-size: 3.5rem; color: var(--text-muted); position: relative; z-index: 1; transition: all 0.5s ease; }
+        .card:hover .card-img i { color: var(--text-main); transform: scale(1.05); }
+
+        .hero {
+            background: linear-gradient(135deg, rgba(255, 45, 85, 0.1) 0%, rgba(88, 86, 214, 0.1) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 32px; padding: 60px; margin-bottom: 4rem;
+            position: relative; overflow: hidden; display: flex; align-items: center;
+            justify-content: space-between; backdrop-filter: blur(10px);
+        }
+        .hero-content { position: relative; z-index: 2; max-width: 600px; }
+        .hero-content h1 { font-size: 3.5rem; font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -2px; }
+        .hero-content p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2.5rem; line-height: 1.6; }
+        .hero-img { 
+            width: 320px; height: 320px; 
+            background: url('https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=500&q=80') center/cover; 
+            border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); 
+            transform: rotate(6deg); transition: all 0.5s ease;
+        }
+        .hero:hover .hero-img { transform: rotate(0deg) scale(1.05); }
+
+        .play-btn {
+            position: absolute; bottom: 16px; right: 16px;
+            width: 52px; height: 52px; border-radius: 50%;
+            background: var(--accent); color: white; display: flex; align-items: center; justify-content: center;
+            opacity: 0; transform: translateY(10px) scale(0.8); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer; z-index: 10; box-shadow: 0 12px 24px rgba(255, 45, 85, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .play-btn i { font-size: 1.2rem; margin-left: 3px; }
+        .card:hover .play-btn { opacity: 1; transform: translateY(0) scale(1); }
+        .play-btn:hover { background: white; color: var(--accent); transform: scale(1.1); box-shadow: 0 15px 30px rgba(255, 255, 255, 0.2); }
+
+        .card-title { font-weight: 800; font-size: 1.25rem; margin-bottom: 8px; color: var(--text-main); letter-spacing: -0.5px; }
+        .card-author { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 18px; font-weight: 500; }
+        
+        .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+        .tag { 
+            font-size: 0.75rem; font-weight: 700; padding: 6px 12px; 
+            background: rgba(255,255,255,0.06); border-radius: 10px; color: var(--text-muted); 
+            transition: all 0.3s; border: 1px solid transparent;
+        }
+        .card:hover .tag { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.1); color: var(--text-main); }
+
+        .card-footer {
+            margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border-color);
+            display: flex; gap: 16px; align-items: center;
+        }
+        .action-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; transition: all 0.3s; font-size: 1rem; }
+        .action-btn:hover { color: var(--text-main); transform: scale(1.2); }
+        .action-btn.delete:hover { color: var(--accent); }
+
+        .modal {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px);
+            display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px;
+        }
+        .modal.active { display: flex; animation: modalIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes modalIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+        .modal-body {
+            background: #111; border: 1px solid var(--border-color); width: 100%; max-width: 480px;
+            border-radius: 28px; padding: 48px; box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+        }
+        .form-control {
+            width: 100%; background: #1a1a1a; border: 1px solid var(--border-color);
+            padding: 16px 20px; border-radius: 16px; color: white; margin-bottom: 20px; 
+            outline: none; font-size: 1rem; transition: all 0.3s;
+        }
+        .form-control:focus { border-color: var(--accent); background: #222; box-shadow: 0 0 0 4px rgba(255, 45, 85, 0.1); }
+        
+        .no-data { 
+            grid-column: 1 / -1; padding: 80px; text-align: center; color: var(--text-muted); 
+            border: 2px dashed var(--border-color); border-radius: 32px; font-weight: 600; font-size: 1.1rem;
+        }
+
+        {{EXTRA_STYLE}}
+    </style>
+</head>
+<body>
+    <div class="floating-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <aside class="sidebar">
+        <a href="/" class="logo">
+            <div class="logo-icon"><i class="fas fa-wave-square"></i></div>
+            VibeStream
+        </a>
+
+        <div class="nav-label">Library</div>
+        <a href="/api/v1/tracks" class="nav-item" id="nav-tracks"><i class="fas fa-compact-disc"></i> Tracks</a>
+        <a href="/api/v1/audiobooks" class="nav-item" id="nav-audiobooks"><i class="fas fa-book-open"></i> Audiobooks</a>
+        <a href="/api/v1/albums" class="nav-item" id="nav-albums"><i class="fas fa-layer-group"></i> Albums</a>
+        <a href="/api/v1/artists" class="nav-item" id="nav-artists"><i class="fas fa-user-astronaut"></i> Artists</a>
+        <a href="/api/v1/podcasts" class="nav-item" id="nav-podcasts"><i class="fas fa-microphone-lines"></i> Podcasts</a>
+        <a href="/api/v1/playlists" class="nav-item" id="nav-playlists"><i class="fas fa-list-ul"></i> Playlists</a>
+        <a href="/api/v1/reviews" class="nav-item" id="nav-reviews"><i class="fas fa-star-half-alt"></i> Reviews</a>
+
+        <div class="nav-label">Account</div>
+        <div id="auth-section">
+            <button class="nav-item" onclick="openAuth('login')"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+            <button class="nav-item" onclick="openAuth('signup')"><i class="fas fa-user-plus"></i> Register</button>
+        </div>
+        <div id="user-section" style="display: none;">
+            <div class="nav-item" style="cursor: default;"><i class="fas fa-user"></i> <span id="display-name">User</span></div>
+            <button class="nav-item" id="logoutBtn" style="color: #f87171;"><i class="fas fa-power-off"></i> Logout</button>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="header">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Пошук музики...">
+            </div>
+            <button class="btn btn-primary" id="addBtn"><i class="fas fa-plus"></i> Додати {{TYPE_LABEL}}</button>
+        </header>
+
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Твій ритм, твоя свобода.</h1>
+                <p>Досліджуй мільйони треків, подкастів та альбомів у найвищій якості. Створюй свій власний вайб разом з VibeStream.</p>
+                <div style="display: flex; gap: 16px;">
+                    <button class="btn btn-primary" onclick="alert('Скоро у продажу!')">Почати слухати</button>
+                    <button class="btn" style="background: rgba(255,255,255,0.05); color: white;" onclick="alert('VibeStream Premium v1.0')">Дізнатись більше</button>
+                </div>
+            </div>
+            <div class="hero-img"></div>
+        </section>
+
+        <h2 class="page-title">{{TITLE}}</h2>
+
+        <div class="grid" id="itemsGrid">
+            {{CONTENT}}
+        </div>
+    </main>
+
+    <!-- Auth Modal -->
+    <div class="modal" id="authModal">
+        <div class="modal-body">
+            <div id="login-form">
+                <h2 style="margin-bottom: 8px;">Welcome</h2>
+                <p style="color: var(--text-muted); margin-bottom: 24px;">Sign in to your account</p>
+                <form onsubmit="handleAuth(event, 'login')">
+                    <input type="email" id="login-email" class="form-control" placeholder="Email address" required>
+                    <input type="password" id="login-pass" class="form-control" placeholder="Password" required>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Sign In</button>
+                </form>
+                <p style="text-align: center; margin-top: 24px; color: var(--text-muted); font-size: 0.85rem;">
+                    Don't have an account? <span onclick="openAuth('signup')" style="color: var(--text-main); cursor: pointer; font-weight: 600;">Register</span>
+                </p>
+            </div>
+
+            <div id="signup-form" style="display: none;">
+                <h2 style="margin-bottom: 8px;">Register</h2>
+                <p style="color: var(--text-muted); margin-bottom: 24px;">Join our community</p>
+                <form onsubmit="handleAuth(event, 'signup')">
+                    <input type="text" id="signup-user" class="form-control" placeholder="Username" required>
+                    <input type="email" id="signup-email" class="form-control" placeholder="Email address" required>
+                    <input type="password" id="signup-pass" class="form-control" placeholder="Password" required>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Create Account</button>
+                </form>
+                <p style="text-align: center; margin-top: 24px; color: var(--text-muted); font-size: 0.85rem;">
+                    Already have an account? <span onclick="openAuth('login')" style="color: var(--text-main); cursor: pointer; font-weight: 600;">Sign In</span>
+                </p>
+            </div>
+            <button class="action-btn" style="width: 100%; margin-top: 16px; justify-content: center;" onclick="closeModal('authModal')">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Item Modal -->
+    <div class="modal" id="itemModal">
+        <div class="modal-body">
+            <h2 id="modalTitle" style="margin-bottom: 24px;">Create New</h2>
+            <form id="itemForm">
+                <input type="hidden" id="itemId">
+                <input type="text" id="titleInput" class="form-control" placeholder="Title" required>
+                <input type="text" id="authorInput" class="form-control" placeholder="Artist / Author" required>
+                <input type="text" id="tagsInput" class="form-control" placeholder="Tags (comma separated)">
+                <div style="display: flex; gap: 12px; margin-top: 8px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1; justify-content: center;">Save</button>
+                    <button type="button" class="btn" onclick="closeModal('itemModal')" style="flex: 1; justify-content: center; background: rgba(255,255,255,0.05); color: white;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api/v1';
+        const type = window.location.pathname.split('/').pop();
+        
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        const navIds = ['tracks', 'audiobooks', 'albums', 'artists', 'podcasts', 'playlists', 'reviews'];
+        if (navIds.includes(type)) {
+            document.getElementById('nav-' + type)?.classList.add('active');
+        }
+
+        let token = localStorage.getItem('token');
+        let user = JSON.parse(localStorage.getItem('user'));
+
+        function updateUI() {
+            if (token && user) {
+                document.getElementById('auth-section').style.display = 'none';
+                document.getElementById('user-section').style.display = 'block';
+                document.getElementById('display-name').innerText = user.username;
+            } else {
+                document.getElementById('auth-section').style.display = 'block';
+                document.getElementById('user-section').style.display = 'none';
+            }
+        }
+        updateUI();
+
+        window.openAuth = (mode) => {
+            document.getElementById('login-form').style.display = mode === 'login' ? 'block' : 'none';
+            document.getElementById('signup-form').style.display = mode === 'signup' ? 'block' : 'none';
+            document.getElementById('authModal').classList.add('active');
+        };
+
+        window.closeModal = (id) => document.getElementById(id).classList.remove('active');
+
+        window.handleAuth = async (e, mode) => {
+            e.preventDefault();
+            const url = mode === 'login' ? `${API_BASE}/users/login` : `${API_BASE}/users/signup`;
+            const body = mode === 'login' 
+                ? { email: document.getElementById('login-email').value, password: document.getElementById('login-pass').value }
+                : { username: document.getElementById('signup-user').value, email: document.getElementById('signup-email').value, password: document.getElementById('signup-pass').value };
+
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.data.user));
+                    location.reload();
+                } else {
+                    alert(data.message || 'Authentication error');
+                }
+            } catch (err) {
+                alert('Connection failed');
+            }
+        };
+
+        document.getElementById('logoutBtn')?.addEventListener('click', () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            location.reload();
+        });
+
+        const itemForm = document.getElementById('itemForm');
+        document.getElementById('addBtn')?.addEventListener('click', () => {
+            if (!token) return openAuth('login');
+            itemForm.reset(); document.getElementById('itemId').value = '';
+            
+            // Adjust placeholders based on type
+            if (type === 'artists' || type === 'playlists') {
+                document.getElementById('titleInput').placeholder = 'Name';
+                document.getElementById('authorInput').placeholder = type === 'artists' ? 'Genres (comma separated)' : 'Description';
+            } else if (type === 'reviews') {
+                document.getElementById('titleInput').placeholder = 'Review text';
+                document.getElementById('authorInput').placeholder = 'Rating (1-5)';
+            } else {
+                document.getElementById('titleInput').placeholder = 'Title';
+                document.getElementById('authorInput').placeholder = (type === 'tracks' || type === 'albums') ? 'Artist' : (type === 'podcasts' ? 'Host' : 'Author');
+            }
+            
+            document.getElementById('modalTitle').innerText = 'Add ' + type.slice(0,-1);
+            document.getElementById('itemModal').classList.add('active');
+        });
+
+        itemForm?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('itemId').value;
+            
+            const titleVal = document.getElementById('titleInput').value;
+            const authorVal = document.getElementById('authorInput').value;
+            const tagsVal = document.getElementById('tagsInput').value;
+
+            let payload = {};
+
+            if (type === 'artists' || type === 'playlists') {
+                payload.name = titleVal;
+                if (type === 'artists') payload.genre = authorVal.split(',').map(g => g.trim());
+                if (type === 'playlists') payload.description = authorVal;
+            } else if (type === 'reviews') {
+                payload.review = titleVal;
+                payload.rating = Number(authorVal);
+            } else {
+                payload.title = titleVal;
+                const authorField = (type === 'tracks' || type === 'albums') ? 'artist' : (type === 'podcasts' ? 'host' : 'author');
+                payload[authorField] = authorVal;
+            }
+
+            if (tagsVal) {
+                payload.tags = tagsVal.split(',').map(t => t.trim()).filter(t => t);
+            }
+
+            try {
+                const res = await fetch(id ? `${API_BASE}/${type}/${id}` : `${API_BASE}/${type}`, {
+                    method: id ? 'PATCH' : 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) location.reload(); else {
+                    const errorData = await res.json();
+                    alert('Operation failed: ' + (errorData.message || 'Unknown error'));
+                }
+            } catch (err) { alert('Network error'); }
+        });
+
+        window.deleteItem = async (id) => {
+            if (!confirm('Are you sure you want to delete this?')) return;
+            const res = await fetch(`${API_BASE}/${type}/${id}`, { 
+                method: 'DELETE', 
+                headers: { 'Authorization': `Bearer ${token}` } 
+            });
+            if (res.ok) location.reload();
+            else alert('Delete failed');
+        };
+
+        window.editItem = async (id) => {
+            const res = await fetch(`${API_BASE}/${type}/${id}`, { 
+                headers: { 'Authorization': `Bearer ${token}` } 
+            });
+            const { data } = await res.json();
+            const item = data.track || data.audiobook || data.playlist || data.podcast || data.album || data.artist || data.review;
+            
+            document.getElementById('itemId').value = item._id;
+            
+            if (type === 'artists' || type === 'playlists') {
+                document.getElementById('titleInput').value = item.name;
+                document.getElementById('authorInput').value = type === 'artists' ? (item.genre ? item.genre.join(', ') : '') : (item.description || '');
+            } else if (type === 'reviews') {
+                document.getElementById('titleInput').value = item.review;
+                document.getElementById('authorInput').value = item.rating;
+            } else {
+                document.getElementById('titleInput').value = item.title;
+                const authorField = (type === 'tracks' || type === 'albums') ? 'artist' : (type === 'podcasts' ? 'host' : 'author');
+                const authorVal = item[authorField];
+                document.getElementById('authorInput').value = (typeof authorVal === 'object' && authorVal !== null) ? (authorVal.name || authorVal._id || '') : (authorVal || '');
+            }
+            
+            document.getElementById('tagsInput').value = item.tags ? item.tags.join(', ') : '';
+            document.getElementById('modalTitle').innerText = 'Edit Information';
+            document.getElementById('itemModal').classList.add('active');
+        };
+
+        document.getElementById('searchInput')?.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            document.querySelectorAll('.card').forEach(c => {
+                c.style.display = c.innerText.toLowerCase().includes(term) ? 'flex' : 'none';
+            });
+        });
+        
+        window.playItem = (t) => alert('Selected: ' + t);
+    </script>
+</body>
+</html>
