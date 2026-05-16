@@ -54,10 +54,10 @@ describe('Final Absolute Coverage 100.00%', () => {
 
     for (const t of types) {
       await clear();
-      // Hits empty HTML branch
+      
       await request(app).get(`/api/v1/${t.p}`).set('Accept', 'text/html').expect(200);
 
-      // Hits success branches
+      
       const c = await request(app).post(`/api/v1/${t.p}`).set('Authorization', auth).send(t.d).expect(201);
       const id = c.body.data[t.p.slice(0, -1)]?._id || c.body.data.album?._id;
 
@@ -67,7 +67,7 @@ describe('Final Absolute Coverage 100.00%', () => {
       await request(app).patch(`/api/v1/${t.p}/${id}`).set('Authorization', auth).send({ title: 'U', name: 'U' }).expect(200);
       await request(app).delete(`/api/v1/${t.p}/${id}`).set('Authorization', auth).expect(204);
 
-      // 404s
+      
       await request(app).get(`/api/v1/${t.p}/${id}`).expect(404);
       await request(app).patch(`/api/v1/${t.p}/${id}`).set('Authorization', auth).send({ title: 'x' }).expect(404);
       await request(app).delete(`/api/v1/${t.p}/${id}`).set('Authorization', auth).expect(404);

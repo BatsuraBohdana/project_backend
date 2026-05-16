@@ -38,12 +38,12 @@ describe('Absolute 100% Coverage', () => {
   });
 
   test('Hit everything', async () => {
-    // Empty HTML branches
+    
     for (const t of ['albums', 'tracks', 'reviews', 'podcasts', 'artists', 'audiobooks', 'playlists']) {
       await request(app).get(`/api/v1/${t}`).set('Accept', 'text/html').expect(200);
     }
 
-    // Auth branches
+    
     process.env.SKIP_AUTH = 'false';
     const uRes = await request(app).post('/api/v1/users/login').send({ email: 'u@t.com', password: 'password1234' });
     await request(app).get('/api/v1/users').set('Authorization', `Bearer ${uRes.body.token}`).expect(403);
@@ -60,7 +60,7 @@ describe('Absolute 100% Coverage', () => {
     await request(app).get('/api/v1/users').expect(200);
     spyF.mockRestore();
 
-    // Data HTML branches
+    
     const art = await Artist.create({ name: 'A "Q"', genre: ['R "Q"'] });
     await Album.create({ title: 'A "Q"', artist: art._id, genre: ['J'] });
     await Track.create({ title: 'T "Q"', artist: 'A "Q"', tags: ['T'] });
@@ -69,7 +69,7 @@ describe('Absolute 100% Coverage', () => {
     for (const t of ['albums', 'tracks', 'reviews', 'podcasts', 'artists']) {
       await request(app).get(`/api/v1/${t}`).set('Accept', 'text/html').expect(200);
     }
-    // Null data HTML
+    
     const db = mongoose.connection.db;
     await db.collection('albums').insertOne({ title: null, artist: null, genre: null });
     await db.collection('tracks').insertOne({ title: null, artist: null, tags: null });
@@ -79,7 +79,7 @@ describe('Absolute 100% Coverage', () => {
       await request(app).get(`/api/v1/${t}`).set('Accept', 'text/html').expect(200);
     }
 
-    // Middleware Direct
+    
     const next = jest.fn();
     await authMiddleware.protect({ headers: {} }, {}, next);
     const tk = jwt.sign({ id: userId }, process.env.JWT_SECRET);
@@ -120,7 +120,7 @@ describe('Absolute 100% Coverage', () => {
     expect(new AppError('x', 400).status).toBe('fail');
     expect(new AppError('x', 500).status).toBe('error');
 
-    // Validations
+    
     const v = [{ p: 'users/signup', d: { password: '1' } }, { p: 'audiobooks', d: { duration: 'x' } }, { p: 'audiobooks', d: { duration: NaN } }, { p: 'tracks', d: { duration: 'x' } }, { p: 'tracks', d: { duration: NaN } }];
     for (const c of v) await request(app).post(`/api/v1/${c.p}`).set('Authorization', `Bearer ${adminToken}`).send(c.d).expect(400);
     await request(app).post('/api/v1/reviews').set('Authorization', `Bearer ${adminToken}`).send({ review: 'x' }).expect(201);

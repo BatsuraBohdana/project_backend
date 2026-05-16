@@ -2,7 +2,7 @@ const User = require('../models/User');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
-exports.getAllUsers = catchAsync(async (req, res, next) => { // eslint-disable-line
+exports.getAllUsers = catchAsync(async (req, res, next) => { 
   const users = await User.find();
   res.status(200).json({
     status: 'success',
@@ -11,7 +11,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => { // eslint-disable-l
   });
 });
 
-exports.createUser = catchAsync(async (req, res, next) => { // eslint-disable-line
+exports.createUser = catchAsync(async (req, res, next) => { 
   const newUser = await User.create(req.body);
   newUser.password = undefined;
   res.status(201).json({

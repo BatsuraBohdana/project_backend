@@ -6,7 +6,7 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 
-exports.createReview = catchAsync(async (req, res, next) => { // eslint-disable-line
+exports.createReview = catchAsync(async (req, res, next) => { 
   if (!req.body.user) req.body.user = req.user.id;
   const review = await Review.create(req.body);
   res.status(201).json({
@@ -15,7 +15,7 @@ exports.createReview = catchAsync(async (req, res, next) => { // eslint-disable-
   });
 });
 
-exports.getAllReviews = catchAsync(async (req, res, next) => { // eslint-disable-line
+exports.getAllReviews = catchAsync(async (req, res, next) => { 
   const features = new APIFeatures(Review.find().populate('user'), req.query)
     .filter()
     .sort()

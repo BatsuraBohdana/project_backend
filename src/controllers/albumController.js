@@ -6,7 +6,7 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 
-exports.createAlbum = catchAsync(async (req, res, next) => { // eslint-disable-line
+exports.createAlbum = catchAsync(async (req, res, next) => { 
   const album = await Album.create(req.body);
   res.status(201).json({
     status: 'success',
@@ -14,7 +14,7 @@ exports.createAlbum = catchAsync(async (req, res, next) => { // eslint-disable-l
   });
 });
 
-exports.getAllAlbums = catchAsync(async (req, res, next) => { // eslint-disable-line
+exports.getAllAlbums = catchAsync(async (req, res, next) => { 
   const features = new APIFeatures(Album.find().populate('artist'), req.query)
     .filter()
     .sort()

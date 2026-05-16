@@ -6,7 +6,7 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 
-exports.getAllAudiobooks = catchAsync(async (req, res, next) => { // eslint-disable-line
+exports.getAllAudiobooks = catchAsync(async (req, res, next) => { 
   const features = new APIFeatures(Audiobook.find(), req.query)
     .filter()
     .sort()

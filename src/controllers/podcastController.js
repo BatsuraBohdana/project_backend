@@ -6,7 +6,7 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 
-exports.createPodcast = catchAsync(async (req, res, next) => { // eslint-disable-line
+exports.createPodcast = catchAsync(async (req, res, next) => { 
   const podcast = await Podcast.create(req.body);
   res.status(201).json({
     status: 'success',
@@ -14,7 +14,7 @@ exports.createPodcast = catchAsync(async (req, res, next) => { // eslint-disable
   });
 });
 
-exports.getAllPodcasts = catchAsync(async (req, res, next) => { // eslint-disable-line
+exports.getAllPodcasts = catchAsync(async (req, res, next) => { 
   const features = new APIFeatures(Podcast.find(), req.query)
     .filter()
     .sort()
