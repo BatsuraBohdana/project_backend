@@ -4,14 +4,10 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-
-
-
 router
   .route('/')
   .get(playlistController.getAllPlaylists)
   .post(authController.protect, playlistController.createPlaylist);
-
 
 router
   .route('/:id')

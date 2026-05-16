@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const TemplateEngine = require('../utils/templateEngine');
 
-exports.createPlaylist = catchAsync(async (req, res, next) => { 
+exports.createPlaylist = catchAsync(async (req, res, next) => {
   const playlist = await Playlist.create(req.body);
   res.status(201).json({
     status: 'success',
@@ -14,7 +14,7 @@ exports.createPlaylist = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getAllPlaylists = catchAsync(async (req, res, next) => { 
+exports.getAllPlaylists = catchAsync(async (req, res, next) => {
   const playlists = await Playlist.find().populate('tracks');
 
   if (req.headers.accept && req.headers.accept.includes('text/html')) {

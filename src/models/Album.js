@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { logNewAlbum } = require('../middleware/modelHooks');
 
 const albumSchema = new mongoose.Schema({
   title: {
@@ -20,6 +21,8 @@ const albumSchema = new mongoose.Schema({
     select: false
   }
 });
+
+albumSchema.post('save', logNewAlbum);
 
 const Album = mongoose.model('Album', albumSchema);
 

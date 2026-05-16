@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const { hashPassword } = require('../middleware/modelHooks');
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -32,13 +32,10 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  this.password = await bcrypt.hash(this.password, 12);
-  next();
-});
+userSchema.pre('save', hashPassword);
 
 userSchema.methods.correctPassword = async function(candidatePassword, userPassword) {
+  const bcrypt = require('bcryptjs');
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 

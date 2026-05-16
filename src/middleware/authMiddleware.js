@@ -5,7 +5,7 @@ const AppError = require('../utils/appError');
 
 exports.protect = async (req, res, next) => {
   try {
-    
+
     let token;
     if (
       req.headers.authorization &&
@@ -20,10 +20,8 @@ exports.protect = async (req, res, next) => {
       );
     }
 
-    
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
-    
     const currentUser = await User.findById(decoded.id);
     if (!currentUser) {
       return next(
@@ -34,11 +32,6 @@ exports.protect = async (req, res, next) => {
       );
     }
 
-    
-    
-    
-
-    
     req.user = currentUser;
     next();
   } catch (err) {
@@ -48,7 +41,7 @@ exports.protect = async (req, res, next) => {
 
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
-    
+
     if (!roles.includes(req.user.role)) {
       return next(
         new AppError('You do not have permission to perform this action', 403)

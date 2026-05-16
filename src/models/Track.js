@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { trimTrackTitle, logNewTrack } = require('../middleware/modelHooks');
 
 const trackSchema = new mongoose.Schema({
   title: {
@@ -39,5 +40,8 @@ const trackSchema = new mongoose.Schema({
 
 trackSchema.index({ tags: 1 });
 trackSchema.index({ createdAt: 1 });
+
+trackSchema.pre('save', trimTrackTitle);
+trackSchema.post('save', logNewTrack);
 
 module.exports = mongoose.model('Track', trackSchema);

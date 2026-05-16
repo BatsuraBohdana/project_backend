@@ -22,7 +22,7 @@ module.exports = (err, _req, res, _next) => {
       stack: error.stack
     });
   } else {
-    
+
     let error = { ...err };
     error.message = err.message;
 

@@ -6,7 +6,7 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 
-exports.createTrack = catchAsync(async (req, res, next) => { 
+exports.createTrack = catchAsync(async (req, res, next) => {
   const track = await Track.create(req.body);
   res.status(201).json({
     status: 'success',
@@ -14,7 +14,7 @@ exports.createTrack = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getAllTracks = catchAsync(async (req, res, next) => { 
+exports.getAllTracks = catchAsync(async (req, res, next) => {
   const features = new APIFeatures(Track.find(), req.query)
     .filter()
     .sort()

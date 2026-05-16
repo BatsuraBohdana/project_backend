@@ -4,14 +4,10 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-
-
-
 router
   .route('/')
   .get(podcastController.getAllPodcasts)
   .post(authController.protect, podcastController.createPodcast);
-
 
 router
   .route('/:id')

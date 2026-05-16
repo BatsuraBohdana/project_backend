@@ -4,14 +4,10 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-
-
-
 router
   .route('/')
   .get(artistController.getAllArtists)
   .post(authController.protect, artistController.createArtist);
-
 
 router
   .route('/:id')

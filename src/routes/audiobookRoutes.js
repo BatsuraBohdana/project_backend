@@ -5,14 +5,10 @@ const { validateAudiobook } = require('../validations/audiobookValidation');
 
 const router = express.Router();
 
-
-
-
 router
   .route('/')
   .get(audiobookController.getAllAudiobooks)
   .post(authController.protect, validateAudiobook, audiobookController.createAudiobook);
-
 
 router
   .route('/:id')

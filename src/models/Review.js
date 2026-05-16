@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { populateReviewUser } = require('../middleware/modelHooks');
 
 const reviewSchema = new mongoose.Schema({
   review: {
@@ -28,6 +29,8 @@ const reviewSchema = new mongoose.Schema({
     ref: 'Album'
   }
 });
+
+reviewSchema.pre(/^find/, populateReviewUser);
 
 const Review = mongoose.model('Review', reviewSchema);
 

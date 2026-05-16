@@ -5,20 +5,14 @@ const { validateUser } = require('../validations/userValidation');
 
 const router = express.Router();
 
-
-
-
 router.post('/signup', validateUser, authController.signup);
 
-
 router.post('/login', authController.login);
-
 
 router
   .route('/')
   .get(authController.protect, authController.restrictTo('admin'), userController.getAllUsers)
   .post(authController.protect, authController.restrictTo('admin'), validateUser, userController.createUser);
-
 
 router
   .route('/:id')
