@@ -16,16 +16,7 @@ const swaggerOptions = {
         url: `http://localhost:${process.env.PORT || 3000}`,
         description: 'Локальний сервер'
       }
-    ],
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
-        }
-      }
-    }
+    ]
   },
   apis: ['./src/routes/*.js']
 };
