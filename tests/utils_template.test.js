@@ -1,6 +1,6 @@
 const TemplateEngine = require('../src/utils/templateEngine');
-const fs = require('fs');
-const path = require('path');
+const _fs = require('fs');
+const _path = require('path');
 
 describe('TemplateEngine Utility', () => {
   test('Should render template with data', () => {

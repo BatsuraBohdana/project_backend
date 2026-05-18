@@ -6,6 +6,9 @@ module.exports = [
   js.configs.recommended,
   security.configs.recommended,
   {
+    ignores: ['node_modules/**', 'coverage/**', 'logs/**']
+  },
+  {
     languageOptions: {
       ecmaVersion: 2021,
       sourceType: 'commonjs',
@@ -24,7 +27,10 @@ module.exports = [
       'linebreak-style': ['error', 'unix'],
       'quotes': ['error', 'single'],
       'semi': ['error', 'always'],
-      'no-unused-vars': ['warn', { 'argsIgnorePattern': '^_' }],
+      'no-unused-vars': ['error', {
+        'argsIgnorePattern': '^_|next',
+        'varsIgnorePattern': '^_'
+      }],
       'no-console': 'off',
       'no-trailing-spaces': 'error',
       'eol-last': ['error', 'always'],
@@ -36,6 +42,17 @@ module.exports = [
       'space-in-parens': ['error', 'never'],
       'comma-spacing': ['error', { 'before': false, 'after': true }],
       'no-multi-spaces': 'error',
+      'space-infix-ops': 'error',
+      'semi-spacing': ['error', { 'before': false, 'after': true }],
+      'key-spacing': ['error', { 'beforeColon': false, 'afterColon': true }],
+      'func-call-spacing': ['error', 'never'],
+      'no-whitespace-before-property': 'error',
+      'space-before-function-paren': ['error', {
+        'anonymous': 'always',
+        'named': 'never',
+        'asyncArrow': 'always'
+      }],
+      'arrow-spacing': ['error', { 'before': true, 'after': true }],
       'security/detect-object-injection': 'off'
     }
   },

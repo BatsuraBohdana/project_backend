@@ -1,5 +1,5 @@
 const fs = require('fs');
-const path = require('path');
+const _path = require('path');
 const request = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../src/app');

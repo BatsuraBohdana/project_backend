@@ -1,11 +1,11 @@
 const request = require('supertest');
-const mongoose = require('mongoose');
+const _mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const app = require('../src/app');
 const User = require('../src/models/User');
 
 describe('Authentication & Authorization', () => {
-  let adminToken, userToken, adminId, userId;
+  let adminToken, userToken, _adminId, _userId;
 
   beforeAll(async () => {
     await User.deleteMany({});
@@ -16,7 +16,7 @@ describe('Authentication & Authorization', () => {
       password: 'password1234',
       role: 'admin'
     });
-    adminId = admin._id;
+    _adminId = admin._id;
 
     const user = await User.create({
       username: 'user',
@@ -24,7 +24,7 @@ describe('Authentication & Authorization', () => {
       password: 'password1234',
       role: 'user'
     });
-    userId = user._id;
+    _userId = user._id;
 
     const adminRes = await request(app).post('/api/v1/users/login').send({
       email: 'admin@test.com',

@@ -9,7 +9,7 @@ describe('User Management', () => {
     process.env.SKIP_AUTH = 'true';
     await User.deleteMany({});
 
-    const admin = await User.create({
+    const _admin = await User.create({
       username: 'admin',
       email: 'admin@u.com',
       password: 'password1234',

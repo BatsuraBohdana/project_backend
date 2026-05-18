@@ -1,5 +1,5 @@
 const request = require('supertest');
-const mongoose = require('mongoose');
+const _mongoose = require('mongoose');
 const app = require('../src/app');
 const Album = require('../src/models/Album');
 const Artist = require('../src/models/Artist');
