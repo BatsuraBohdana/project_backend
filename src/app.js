@@ -6,7 +6,6 @@ const loggerMiddleware = require('./middleware/logger');
 const responseTimeMiddleware = require('./middleware/responseTime');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocs = require('./utils/swagger');
-
 const albumRoutes = require('./routes/albumRoutes');
 const trackRoutes = require('./routes/trackRoutes');
 const userRoutes = require('./routes/userRoutes');

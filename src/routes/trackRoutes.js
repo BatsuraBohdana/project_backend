@@ -22,6 +22,36 @@ const router = express.Router();
  *   post:
  *     summary: Створити новий трек
  *     tags: [Tracks]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *               - artist
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: Bohemian Rhapsody
+ *               artist:
+ *                 type: string
+ *                 example: Queen
+ *               album:
+ *                 type: string
+ *                 example: A Night at the Opera
+ *               duration:
+ *                 type: number
+ *                 example: 354
+ *               tags:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["rock", "classic"]
+ *               url:
+ *                 type: string
+ *                 example: https://example.com/track.mp3
  *     responses:
  *       201:
  *         description: Трек створено
@@ -55,6 +85,26 @@ router
  *         required: true
  *         schema:
  *           type: string
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               artist:
+ *                 type: string
+ *               album:
+ *                 type: string
+ *               duration:
+ *                 type: number
+ *               tags:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               url:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Трек оновлено

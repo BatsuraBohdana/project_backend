@@ -1,6 +1,7 @@
 const express = require('express');
 const playlistController = require('../controllers/playlistController');
 const authController = require('../controllers/authController');
+const { validatePlaylist } = require('../validations/playlistValidation');
 
 const router = express.Router();
 
@@ -23,6 +24,26 @@ const router = express.Router();
  *   post:
  *     summary: Створити новий плейлист
  *     tags: [Playlists]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: My Favorite Tracks
+ *               description:
+ *                 type: string
+ *                 example: A collection of my favorite music
+ *               tracks:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["64a1b2c3d4e5f67890123456"]
  *     responses:
  *       201:
  *         description: Плейлист створено
@@ -30,7 +51,7 @@ const router = express.Router();
 router
   .route('/')
   .get(playlistController.getAllPlaylists)
-  .post(authController.protect, playlistController.createPlaylist);
+  .post(authController.protect, validatePlaylist, playlistController.createPlaylist);
 
 /**
  * @swagger
@@ -56,6 +77,20 @@ router
  *         required: true
  *         schema:
  *           type: string
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               tracks:
+ *                 type: array
+ *                 items:
+ *                   type: string
  *     responses:
  *       200:
  *         description: Плейлист оновлено

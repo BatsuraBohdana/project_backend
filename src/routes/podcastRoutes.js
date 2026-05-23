@@ -1,6 +1,7 @@
 const express = require('express');
 const podcastController = require('../controllers/podcastController');
 const authController = require('../controllers/authController');
+const { validatePodcast } = require('../validations/podcastValidation');
 
 const router = express.Router();
 
@@ -23,6 +24,35 @@ const router = express.Router();
  *   post:
  *     summary: Створити новий подкаст
  *     tags: [Podcasts]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: The Joe Rogan Experience
+ *               host:
+ *                 type: string
+ *                 example: Joe Rogan
+ *               description:
+ *                 type: string
+ *                 example: A long-form conversation hosted by Joe Rogan
+ *               tags:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["comedy", "politics"]
+ *               duration:
+ *                 type: number
+ *                 example: 7200
+ *               episodeCount:
+ *                 type: number
+ *                 example: 2000
  *     responses:
  *       201:
  *         description: Подкаст створено
@@ -30,7 +60,7 @@ const router = express.Router();
 router
   .route('/')
   .get(podcastController.getAllPodcasts)
-  .post(authController.protect, podcastController.createPodcast);
+  .post(authController.protect, validatePodcast, podcastController.createPodcast);
 
 /**
  * @swagger
@@ -56,6 +86,26 @@ router
  *         required: true
  *         schema:
  *           type: string
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               host:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               tags:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               duration:
+ *                 type: number
+ *               episodeCount:
+ *                 type: number
  *     responses:
  *       200:
  *         description: Подкаст оновлено

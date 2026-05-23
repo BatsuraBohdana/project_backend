@@ -24,16 +24,46 @@ const router = express.Router();
  *   post:
  *     summary: Створити нову аудіокнигу
  *     tags: [Audiobooks]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *               - author
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: The Great Gatsby
+ *               author:
+ *                 type: string
+ *                 example: F. Scott Fitzgerald
+ *               narrator:
+ *                 type: string
+ *                 example: Jake Gyllenhaal
+ *               duration:
+ *                 type: number
+ *                 example: 3600
+ *               description:
+ *                 type: string
+ *                 example: A story about Jay Gatsby and Daisy Buchanan
+ *               tags:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["classic", "literature"]
  *     responses:
  *       201:
  *         description: Аудіокнигу створено
  */
-router
-  .route('/')
-  .get(audiobookController.getAllAudiobooks)
-  .post(authController.protect, validateAudiobook, audiobookController.createAudiobook);
+ router
+ .route('/')
+ .get(audiobookController.getAllAudiobooks)
+ .post(authController.protect, validateAudiobook, audiobookController.createAudiobook);
 
-/**
+ /**
  * @swagger
  * /api/v1/audiobooks/{id}:
  *   get:
@@ -57,6 +87,26 @@ router
  *         required: true
  *         schema:
  *           type: string
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               author:
+ *                 type: string
+ *               narrator:
+ *                 type: string
+ *               duration:
+ *                 type: number
+ *               description:
+ *                 type: string
+ *               tags:
+ *                 type: array
+ *                 items:
+ *                   type: string
  *     responses:
  *       200:
  *         description: Аудіокнигу оновлено
